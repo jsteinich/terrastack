@@ -1,4 +1,4 @@
-import { Construct, ISynthesisSession } from '@aws-cdk/core';
+import { Construct, ISynthesisSession, Node } from 'constructs';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ResourceObject } from './resource-object';
@@ -14,14 +14,14 @@ export class Stack extends Construct {
 
   /**
    * Finds the stack in which a node is defined.
-   * @param node a construct node
+   * @param c a construct node
    */
-  public static of(node: Construct): Stack {
-    if (node instanceof Stack) {
-      return node;
+  public static of(c: Construct): Stack {
+    if (c instanceof Stack) {
+      return c;
     }
 
-    const parent = node.node.scope as Construct;
+    const parent = Node.of(c).scope as Construct;
     if (!parent) {
       throw new Error(`cannot find a parent chart (directly or indirectly)`);
     }
@@ -37,7 +37,7 @@ export class Stack extends Construct {
 
   constructor(scope: Construct, ns: string) {
     super(scope, ns);
-    this.manifestFile = `${this.node.uniqueId}.tf.json`;
+    this.manifestFile = `${Node.of(this).uniqueId}.tf.json`;
   }
 
   /**
@@ -46,13 +46,13 @@ export class Stack extends Construct {
    * @param resourceObject The API object to generate a name for.
    */
   public generateObjectName(resourceObject: ResourceObject) {
-    return Names.toDnsLabel(resourceObject.node.path);
+    return Names.toDnsLabel(Node.of(resourceObject).path);
   }
 
-  protected synthesize(session: ISynthesisSession) {
+  protected onSynthesize(session: ISynthesisSession) {
     const doc: {[k: string]: {[k: string]: any}} = {};
 
-    for (const resource of this.node.findAll()) {
+    for (const resource of Node.of(this).findAll()) {
       if (!(resource instanceof ResourceObject)) {
         continue;
       }
@@ -80,6 +80,6 @@ export class Stack extends Construct {
         doc[type][resourceName] = merged
       }
     }
-    fs.writeFileSync(path.join(session.assembly.outdir, this.manifestFile), JSON.stringify(doc, null, 2));
+    fs.writeFileSync(path.join(session.outdir, this.manifestFile), JSON.stringify(doc, null, 2));
   }
 }
