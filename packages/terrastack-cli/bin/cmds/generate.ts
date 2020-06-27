@@ -8,10 +8,11 @@ class Command implements yargs.CommandModule {
 
   public readonly builder = (args: yargs.Argv) => args    
     .option('output', { type: 'string' as 'string', desc: 'output directory', default: '.generated', alias: 'o' })
-    .option('input', { type: 'string' as 'string', desc: 'schema input file', alias: 'i' });
+    .option('input', { type: 'string' as 'string', desc: 'schema input file', alias: 'i' })
+    .option('provider_version', { type: 'string' as 'string', desc: 'provider version', alias: 'p'});
 
   public async handler(argv: any) {
-    await generateAllApiObjects(argv.output, argv.input);
+    await generateAllApiObjects(argv.output, argv.input, argv.provider_version);
   }
 }
 

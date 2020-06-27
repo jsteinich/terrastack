@@ -8,8 +8,7 @@ export interface Options {
   readonly apiVersion: string;
 }
 
-export async function generateAllApiObjects(outdir: string, inputFile: string) {
-  const version = '2.52.0'
+export async function generateAllApiObjects(outdir: string, inputFile: string, version: string) {
   const code = new CodeMaker();
   code.indentation = 2;
 
@@ -30,7 +29,7 @@ export async function generateAllApiObjects(outdir: string, inputFile: string) {
   await code.save(outdir);  
 
   for (const provider of Object.keys(topLevelObjects)) {
-    writePackageJson(path.join(outdir, provider), provider)
+    writePackageJson(path.join(outdir, provider), provider, version)
   }
 }
 
@@ -51,11 +50,11 @@ async function writeIndex(code: CodeMaker, files: Array<string>, filePath: strin
   code.closeFile(sourceFile);
 }
 
-async function writePackageJson(workdir: string, provider: string) {
+async function writePackageJson(workdir: string, provider: string, version: string) {
   const main = 'index'
   const pkg = {
     name: `@terrastack/${provider}-provider`,
-    version: '0.0.0',
+    version: version,
     author: "sebastian@korfmann.net",
     main: `${main}.js`,
     types: `${main}.d.ts`,
@@ -69,9 +68,20 @@ async function writePackageJson(workdir: string, provider: string) {
     jsii: {
       outdir: "dist",
       targets: {
+        java: {
+          package: `org.terrastack.${provider}.provider`,
+          maven: {
+            groupId: `org.terrastack`,
+            artifactId: `${provider}-provider`
+          }
+        },
         python: {
           distName: `terrastack_${provider}_provider`,
           module: `terrastack_${provider}_provider`
+        },
+        dotnet: {
+          namespace: `Org.terrastack.${provider}.provider`,
+          packageId: `Org.terrastack.${provider}.provider`
         }
       }
     },    
