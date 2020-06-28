@@ -1,5 +1,5 @@
 import { Construct } from 'constructs';
-import { Tag } from "@aws-cdk/core";
+//import { Tag } from "@aws-cdk/core";
 import { App, Stack } from '../../../packages/@terrastack/core';
 import { AwsProvider, AwsS3Bucket, AwsIamPolicy } from '../.generated/aws';
 import { PolicyDocument, PolicyStatement, AnyPrincipal, Effect } from "@aws-cdk/aws-iam"
@@ -38,6 +38,6 @@ class MyBucketStack extends Stack {
   }
 }
 
-const stack = new MyBucketStack(app, 'my-s3-bucket-stack');
+new MyBucketStack(app, 'my-s3-bucket-stack');
 // Tag.add(stack, 'StackType', 'Terraform');
 app.synth();
