@@ -86,16 +86,17 @@ async function writePackageJson(workdir: string, provider: string, version: stri
       }
     },    
     dependencies: {
-      "@aws-cdk/core": "^1.27.0",
-      "@terrastack/core": "^0.15.0",
+      "@aws-cdk/core": "^1.47.0",
+      "@terrastack/core": "file:../../../../packages/@terrastack/core",
     },
     devDependencies: {
       "@types/node": "^13.7.7",
-      jsii: "^0.22.0",
-      "jsii-pacmak": "^0.22.0"
+      jsii: "^1.7.0",
+      "jsii-pacmak": "^1.7.0"
     },  
     peerDependencies: {
-      "@aws-cdk/core": "^1.27.0",
+      "@aws-cdk/core": "^1.47.0",
+      "constructs": "^3.0.2",
       "@terrastack/core": "^0.15.0",
     }
 

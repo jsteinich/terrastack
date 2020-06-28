@@ -53,14 +53,16 @@
     ]
   },
   "dependencies": {
-    "@aws-cdk/core": "^1.27.0",
-    "@aws-cdk/cx-api": "^1.24.0",
+    "@aws-cdk/core": "^1.47.0",
+    "@aws-cdk/cx-api": "^1.47.0",
+    "@aws-cdk/cloud-assembly-schema": "^1.47.0",
     "@types/json-schema": "^7.0.4",
     "@types/node": "^13.7.7",
     "@types/yaml": "^1.2.0",
     "@types/yargs": "^15.0.4",
     "change-case": "^4.1.1",
     "codemaker": "^1.0.0",
+    "constructs": "^3.0.2",
     "crypto": "^1.0.1",
     "fs": "^0.0.1-security",
     "fs-extra": "^8.1.0",
