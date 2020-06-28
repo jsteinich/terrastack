@@ -39,5 +39,5 @@ class MyBucketStack extends Stack {
 }
 
 const stack = new MyBucketStack(app, 'my-s3-bucket-stack');
-Tag.add(stack, 'StackType', 'Terraform');
+// Tag.add(stack, 'StackType', 'Terraform');
 app.synth();
