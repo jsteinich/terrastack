@@ -1,7 +1,7 @@
 import { Construct, ISynthesisSession, Node } from 'constructs';
 import * as fs from 'fs';
 import * as path from 'path';
-import { ResourceObject } from './resource-object';
+import { ResourceObject, TerraformSchemaType } from './resource-object';
 import { resolve } from './_tokens';
 import { removeEmpty } from './_util';
 import { Names } from './names';
@@ -65,19 +65,33 @@ export class Stack extends Construct {
         doc[type] = obj
       }
 
-      if (type === 'provider') {
-        const manifest = removeEmpty(resolve(this, resource._render()));
-        const merged = {...doc[type], ...manifest}
-        doc[type] = merged
-      } else {
-        if (!doc[type][resourceName]) {
-          const obj: {[k: string]: any} = {};
-          doc[type][resourceName] = obj
+      switch(type) {
+        case TerraformSchemaType.PROVIDER: {
+          const manifest = removeEmpty(resolve(this, resource._render()));
+          const merged = {...doc[type], ...manifest}
+          doc[type] = merged
+
+          break;
         }
-        
-        const manifest = removeEmpty(resolve(this, resource._render()));
-        const merged = {...doc[type][resourceName], ...manifest}
-        doc[type][resourceName] = merged
+        case TerraformSchemaType.TERRAFORM: {
+          const manifest = removeEmpty(resolve(this, resource._render()));
+          const merged = {...doc[type], ...manifest}
+          doc[type] = merged
+          
+          break;
+        }
+        default: {
+          if (!doc[type][resourceName]) {
+            const obj: {[k: string]: any} = {};
+            doc[type][resourceName] = obj
+          }
+          
+          const manifest = removeEmpty(resolve(this, resource._render()));
+          const merged = {...doc[type][resourceName], ...manifest}
+          doc[type][resourceName] = merged
+
+          break;
+       }
       }
     }
     fs.writeFileSync(path.join(session.outdir, this.manifestFile), JSON.stringify(doc, null, 2));

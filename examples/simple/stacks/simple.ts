@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
 //import { Tag } from "@aws-cdk/core";
-import { App, Stack } from '../../../packages/@terrastack/core';
+import { App, Stack, Terraform } from '../../../packages/@terrastack/core';
 import { AwsProvider, AwsS3Bucket, AwsIamPolicy } from '../.generated/aws';
 import { PolicyDocument, PolicyStatement, AnyPrincipal, Effect } from "@aws-cdk/aws-iam"
 
@@ -9,6 +9,19 @@ const app = new App();
 class MyBucketStack extends Stack {
   constructor(scope: Construct, ns: string) {
     super(scope, ns);
+
+    new Terraform(this, {
+      requiredVersion: '>= 0.12.0',
+      requiredProviders: {
+        aws: '>= 2.52.0'
+      },
+      experiments: ['example'],
+      backend: {
+        name: 's3',
+        region: 'eu-central-1',
+        bucket: 'state'
+      }
+    })
 
     new AwsProvider(this, 'aws', {
      region: 'eu-central-1'
