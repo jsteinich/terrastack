@@ -40,7 +40,7 @@ export interface TerraformProps {
 }
 
 export interface TerraformBackend {
-    readonly name?: string;
+    readonly name: string;
 
     readonly [key: string]: any;
 }
