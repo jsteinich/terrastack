@@ -96,7 +96,7 @@ async function writePackageJson(workdir: string, provider: string, version: stri
     },  
     peerDependencies: {
       "@aws-cdk/core": "^1.32.2",
-      "@terrastack/core": "^0.15.0",
+      "@terrastack/core": "file:../../../../packages/@terrastack/core",
       "constructs": "^2.0.2"
     }
 

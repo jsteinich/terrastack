@@ -59,7 +59,7 @@ export function emitConstructForApiObject(code: CodeMaker, def: JSONSchema4, pro
 
     emitOptionsStruct();
 
-    code.line(`import * as tst from '@terrastack/core';`);
+    code.line(`import * as tst from '../../../../../packages/@terrastack/core';`);
     code.line(`import { Construct } from 'constructs';`);
 
     const tagType = getTagType();
