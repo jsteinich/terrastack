@@ -8,8 +8,7 @@ export interface Options {
   readonly apiVersion: string;
 }
 
-export async function generateAllApiObjects(outdir: string, inputFile: string) {
-  const version = '2.52.0'
+export async function generateAllApiObjects(outdir: string, inputFile: string, version: string) {
   const code = new CodeMaker();
   code.indentation = 2;
 
@@ -30,7 +29,7 @@ export async function generateAllApiObjects(outdir: string, inputFile: string) {
   await code.save(outdir);  
 
   for (const provider of Object.keys(topLevelObjects)) {
-    writePackageJson(path.join(outdir, provider), provider)
+    writePackageJson(path.join(outdir, provider), provider, version)
   }
 }
 
@@ -51,11 +50,11 @@ async function writeIndex(code: CodeMaker, files: Array<string>, filePath: strin
   code.closeFile(sourceFile);
 }
 
-async function writePackageJson(workdir: string, provider: string) {
+async function writePackageJson(workdir: string, provider: string, version: string) {
   const main = 'index'
   const pkg = {
     name: `@terrastack/${provider}-provider`,
-    version: '0.0.0',
+    version: version,
     author: "sebastian@korfmann.net",
     main: `${main}.js`,
     types: `${main}.d.ts`,
@@ -69,24 +68,36 @@ async function writePackageJson(workdir: string, provider: string) {
     jsii: {
       outdir: "dist",
       targets: {
+        java: {
+          package: `org.terrastack.${provider}.provider`,
+          maven: {
+            groupId: `org.terrastack`,
+            artifactId: `${provider}-provider`
+          }
+        },
         python: {
           distName: `terrastack_${provider}_provider`,
           module: `terrastack_${provider}_provider`
+        },
+        dotnet: {
+          namespace: `Org.terrastack.${provider}.provider`,
+          packageId: `Org.terrastack.${provider}.provider`
         }
       }
     },    
     dependencies: {
-      "@aws-cdk/core": "^1.27.0",
-      "@terrastack/core": "^0.15.0",
+      "@aws-cdk/core": "1.32.2",
+      "@terrastack/core": "file:../../../../packages/@terrastack/core",
     },
     devDependencies: {
       "@types/node": "^13.7.7",
-      jsii: "^0.22.0",
-      "jsii-pacmak": "^0.22.0"
+      jsii: "^1.7.0",
+      "jsii-pacmak": "^1.7.0"
     },  
     peerDependencies: {
-      "@aws-cdk/core": "^1.27.0",
-      "@terrastack/core": "^0.15.0",
+      "@aws-cdk/core": "^1.32.2",
+      "@terrastack/core": "file:../../../../packages/@terrastack/core",
+      "constructs": "^2.0.2"
     }
 
   };

@@ -72,18 +72,19 @@
     ]
   },
   "devDependencies": {
-    "@aws-cdk/core": "^1.27.0",
+    "@aws-cdk/core": "1.32.2",
     "@types/json-schema": "^7.0.4",
     "@types/node": "^13.7.7",
     "@types/yaml": "^1.2.0",
     "@types/yargs": "^15.0.4",
+    "constructs": "^2.0.2",
     "codemaker": "^1.0.0",
     "crypto": "^1.0.1",
     "eslint": "^6.8.0",
     "fs": "^0.0.1-security",
     "jest": "^25.1.0",
-    "jsii": "^0.22.0",
-    "jsii-pacmak": "^0.22.0",
+    "jsii": "^1.7.0",
+    "jsii-pacmak": "^1.7.0",
     "json-schema": "^0.2.5",
     "json-schema-to-typescript": "^8.0.1",
     "path": "^0.12.7",
@@ -104,8 +105,9 @@
     "yaml": "^1.7.2"
   },
   "peerDependencies": {
-    "@aws-cdk/core": "^1.24.0",
-    "@aws-cdk/cx-api": "^1.24.0"
+    "@aws-cdk/core": "1.32.2",
+    "@aws-cdk/cx-api": "1.32.2",
+    "constructs": "^2.0.2"
   },
   "stability": "experimental",
   "publishConfig": {
