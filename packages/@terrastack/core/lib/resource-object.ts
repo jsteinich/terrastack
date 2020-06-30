@@ -39,7 +39,8 @@ export interface ResourceObjectMetadata {
 export enum TerraformSchemaType {
   PROVIDER = 'provider',
   RESOURCE = 'resource',
-  DATA = 'data'
+  DATA = 'data',
+  TERRAFORM = 'terraform'
 }
 
 export interface TerraformMetadata {
