@@ -1,6 +1,6 @@
 import { ResourceObject, TerraformSchemaType } from './resource-object';
 import { Construct } from 'constructs';
-import { snakeCase } from "./_util";
+import { snakeCaseKeys } from "./_util";
 
 export class Terraform extends ResourceObject {
     public constructor(scope: Construct, options: TerraformProps) {
@@ -18,17 +18,10 @@ export class Terraform extends ResourceObject {
      * @internal
     */
     public _render(): any {
-        const obj: {[k: string]: any} = { ...this.tfProperties };
+        const obj: {[k: string]: any} = snakeCaseKeys({ ...this.tfProperties });
         if(obj.backend) {
             const name = obj.backend.name;
-            const backendObj = { ...obj.backend };
-            for (const key in backendObj) {
-                const snakeKey = snakeCase(key);
-                if(snakeKey !== key) {
-                    backendObj[snakeKey] = backendObj[key];
-                    delete backendObj[key];
-                }
-            }
+            const backendObj = snakeCaseKeys({ ...obj.backend });
             delete backendObj.name;
             obj.backend = {};
             obj.backend[name] = backendObj;

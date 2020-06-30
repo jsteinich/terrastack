@@ -1,8 +1,6 @@
 import { Construct } from 'constructs';
 import { TagManager } from '@aws-cdk/core';
-import {    
-  snakeCase
-} from "./_util";
+import { snakeCase, snakeCaseKeys } from "./_util";
 
 
 /**
@@ -128,7 +126,7 @@ export class ResourceObject extends Construct implements TerraformMeta, IReferen
    */
   public _render(): any {
     const obj: {[k: string]: any} = {};
-    obj[this._name] = this.tfProperties
+    obj[this._name] = snakeCaseKeys(this.tfProperties);
     return obj
   }
 }

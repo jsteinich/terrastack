@@ -29,7 +29,8 @@ class MyBucketStack extends Stack {
     })
 
     const bucket = new AwsS3Bucket(this, 'hello', {
-      bucket: 'world'
+      bucket: 'world',
+      forceDestroy: false
     });
 
     const bucketPolicyDocument = new PolicyDocument({
