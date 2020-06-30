@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
 //import { Tag } from "@aws-cdk/core";
-import { App, Stack, Terraform } from '../../../packages/@terrastack/core';
+import { App, Stack, Terraform, S3Backend } from '../../../packages/@terrastack/core';
 import { AwsProvider, AwsS3Bucket, AwsIamPolicy } from '../.generated/aws';
 import { PolicyDocument, PolicyStatement, AnyPrincipal, Effect } from "@aws-cdk/aws-iam"
 
@@ -16,11 +16,12 @@ class MyBucketStack extends Stack {
         aws: '>= 2.52.0'
       },
       experiments: ['example'],
-      backend: {
-        name: 's3',
+      backend: new S3Backend({
+        bucket: 'mybucket',
+        key: 'path/to/my/key',
         region: 'eu-central-1',
-        bucket: 'state'
-      }
+        accessKey: 'access'
+      })
     })
 
     new AwsProvider(this, 'aws', {

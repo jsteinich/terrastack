@@ -3,3 +3,4 @@ export * from './app';
 export * from './stack';
 export * from './tf-reference';
 export * from './terraform';
+export * from './backends';
