@@ -5,3 +5,4 @@ export * from './backend_artifactory';
 export * from './backend_azurerm';
 export * from './backend_consul';
 export * from './backend_cos';
+export * from './backend_etcd';
