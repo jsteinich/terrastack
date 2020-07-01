@@ -9,3 +9,4 @@ export * from './backend_etcd';
 export * from './backend_etcdv3';
 export * from './backend_gcs';
 export * from './backend_http';
+export * from './backend_manta';
