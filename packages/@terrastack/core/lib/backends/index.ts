@@ -10,3 +10,4 @@ export * from './backend_etcdv3';
 export * from './backend_gcs';
 export * from './backend_http';
 export * from './backend_manta';
+export * from './backend_oss';
