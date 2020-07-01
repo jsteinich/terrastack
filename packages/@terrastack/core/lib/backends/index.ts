@@ -6,3 +6,4 @@ export * from './backend_azurerm';
 export * from './backend_consul';
 export * from './backend_cos';
 export * from './backend_etcd';
+export * from './backend_etcdv3';
