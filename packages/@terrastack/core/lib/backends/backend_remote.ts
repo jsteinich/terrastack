@@ -5,7 +5,7 @@ export class RemoteBackend implements ITerraformBackend {
     hostname?: string;
     organization: string;
     token?: string;
-    workspaces: { readonly name?: string, readonly prefix?: string };
+    workspaces: IRemoteWorkspace;
 
     public constructor(options: RemoteBackendProps) {
         this.hostname = options.hostname;
@@ -19,5 +19,17 @@ export interface RemoteBackendProps {
     readonly hostname?: string;
     readonly organization: string;
     readonly token?: string;
-    readonly workspaces: { readonly name?: string, readonly prefix?: string };
+    readonly workspaces: IRemoteWorkspace;
+}
+
+export interface IRemoteWorkspace {
+    
+}
+
+export class NamedRemoteWorkspace implements IRemoteWorkspace {
+    public constructor(public name: string) {}
+}
+
+export class PrefixedRemoteWorkspaces implements IRemoteWorkspace {
+    public constructor(public prefix: string) {}
 }
