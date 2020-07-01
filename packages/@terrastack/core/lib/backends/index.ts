@@ -7,3 +7,4 @@ export * from './backend_consul';
 export * from './backend_cos';
 export * from './backend_etcd';
 export * from './backend_etcdv3';
+export * from './backend_gcs';
