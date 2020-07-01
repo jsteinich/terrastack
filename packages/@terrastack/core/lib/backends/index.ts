@@ -12,3 +12,4 @@ export * from './backend_http';
 export * from './backend_manta';
 export * from './backend_oss';
 export * from './backend_pg';
+export * from './backend_swift';
