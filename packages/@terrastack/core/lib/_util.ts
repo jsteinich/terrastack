@@ -49,3 +49,14 @@ export function snakeCase(str: string): string {
     .replace(/[^A-Za-z0-9]+|_+/g, '_')
     .toLowerCase();
 }
+
+export function snakeCaseKeys(obj: {[k: string]: any}): {[k: string]: any} {
+  for (const key in obj) {
+    const snakeKey = snakeCase(key);
+    if(snakeKey !== key) {
+        obj[snakeKey] = obj[key];
+        delete obj[key];
+    }
+  }
+  return obj;
+}
