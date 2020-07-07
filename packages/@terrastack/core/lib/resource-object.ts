@@ -38,7 +38,9 @@ export enum TerraformSchemaType {
   PROVIDER = 'provider',
   RESOURCE = 'resource',
   DATA = 'data',
-  TERRAFORM = 'terraform'
+  TERRAFORM = 'terraform',
+  OUTPUT = 'output',
+  VARIABLE = 'variable'
 }
 
 export interface TerraformMetadata {

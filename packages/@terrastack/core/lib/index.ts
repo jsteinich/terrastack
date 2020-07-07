@@ -5,3 +5,4 @@ export * from './tf-reference';
 export * from './terraform';
 export * from './backends';
 export * from './remote-state';
+export * from './output';

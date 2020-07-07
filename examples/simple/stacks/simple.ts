@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
 //import { Tag } from "@aws-cdk/core";
-import { App, Stack, Terraform, S3Backend, TerraformRemoteState } from '../../../packages/@terrastack/core';
+import { App, Stack, Terraform, S3Backend, TerraformRemoteState, Output } from '../../../packages/@terrastack/core';
 import { AwsProvider, AwsS3Bucket, AwsIamPolicy } from '../.generated/aws';
 import { PolicyDocument, PolicyStatement, AnyPrincipal, Effect } from "@aws-cdk/aws-iam"
 
@@ -66,6 +66,11 @@ class MyBucketStack extends Stack {
       bucket: remoteState.get('name'),
       forceDestroy: false
     });
+
+    new Output(this, 'bucket_arn', {
+      value: bucket.arn,
+      description: "A bucket arn"
+    })
   }
 }
 
