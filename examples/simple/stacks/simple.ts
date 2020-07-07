@@ -1,22 +1,22 @@
 import { Construct } from 'constructs';
 //import { Tag } from "@aws-cdk/core";
-import { App, Stack, Terraform, S3Backend, TerraformRemoteState, Output } from '../../../packages/@terrastack/core';
+import * as tsk from '../../../packages/@terrastack/core';
 import { AwsProvider, AwsS3Bucket, AwsIamPolicy } from '../.generated/aws';
 import { PolicyDocument, PolicyStatement, AnyPrincipal, Effect } from "@aws-cdk/aws-iam"
 
-const app = new App();
+const app = new tsk.App();
 
-class MyBucketStack extends Stack {
+class MyBucketStack extends tsk.Stack {
   constructor(scope: Construct, ns: string) {
     super(scope, ns);
 
-    new Terraform(this, {
+    new tsk.Terraform(this, {
       requiredVersion: '>= 0.12.0',
       requiredProviders: {
         aws: '>= 2.52.0'
       },
       experiments: ['example'],
-      backend: new S3Backend({
+      backend: new tsk.S3Backend({
         bucket: 'mybucket',
         key: 'path/to/my/key',
         region: 'eu-central-1',
@@ -28,8 +28,13 @@ class MyBucketStack extends Stack {
      region: 'eu-central-1'
     })
 
+    const bucketVar = new tsk.Variable(this, 'bucket_name', {
+      type: tsk.PrimitiveVariableType.STRING,
+      description: "The name of a bucket"
+    })
+
     const bucket = new AwsS3Bucket(this, 'hello', {
-      bucket: 'world',
+      bucket: bucketVar.value,
       forceDestroy: false
     });
 
@@ -51,8 +56,8 @@ class MyBucketStack extends Stack {
       policy: JSON.stringify(bucketPolicyDocument.toJSON())
     })
 
-    const remoteState = new TerraformRemoteState(this, 'rs', {
-      backend: new S3Backend({
+    const remoteState = new tsk.TerraformRemoteState(this, 'rs', {
+      backend: new tsk.S3Backend({
         bucket: 'otherBucket',
         key: 'akey'
       }),
@@ -67,9 +72,22 @@ class MyBucketStack extends Stack {
       forceDestroy: false
     });
 
-    new Output(this, 'bucket_arn', {
+    new tsk.Output(this, 'bucket_arn', {
       value: bucket.arn,
       description: "A bucket arn"
+    })
+
+    new tsk.Variable(this, 'collection', {
+      type: new tsk.CollectionVariableType(tsk.CollectionType.LIST, tsk.PrimitiveVariableType.NUMBER)
+    })
+
+    new tsk.Variable(this, 'tuple', {
+      type: new tsk.TupleVariableType([tsk.PrimitiveVariableType.BOOL, new tsk.CollectionVariableType(tsk.CollectionType.LIST, tsk.PrimitiveVariableType.NUMBER)])
+    })
+
+    new tsk.Variable(this, 'object', {
+      type: new tsk.ObjectVariableType({internal: tsk.PrimitiveVariableType.NUMBER, protocol: tsk.PrimitiveVariableType.STRING}),
+      default: {internal: 8300, protocol: "tcp"}
     })
   }
 }
