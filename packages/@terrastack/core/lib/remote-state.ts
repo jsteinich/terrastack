@@ -15,8 +15,16 @@ export class TerraformRemoteState extends ResourceObject {
         });
     }
 
-    public get(output: string) :string {
+    public get(output: string) :any {
         return `\$\{${this.logicalId()}.outputs.${snakeCase(output)}\}`
+    }
+
+    public getString(output: string) :string {
+        return this.get(output);
+    }
+
+    public getNumber(output: string) :number {
+        return this.get(output);
     }
 
     /**
