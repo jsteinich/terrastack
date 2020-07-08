@@ -17,11 +17,11 @@ export class Variable extends ResourceObject {
         this.value = `\$\{var.${this._name}\}`
     }
 
-    public stringValue(): string {
+    public get stringValue(): string {
         return this.value;
     }
 
-    public numberValue(): number {
+    public get numberValue(): number {
         return this.value;
     }
 
@@ -31,7 +31,7 @@ export class Variable extends ResourceObject {
      */
     public _render(): any {
         const obj: {[k: string]: any} = snakeCaseKeys({ ...this.tfProperties });
-        if(obj.type && obj.type._render) {
+        if(obj.type) {
             obj.type = obj.type._render();
         }
 
@@ -44,32 +44,32 @@ export class Variable extends ResourceObject {
 export interface VariableProps {
     readonly default?: any;
     readonly description?: string;
-    readonly type?: VariableType;
+    readonly type?: IVariableType;
 }
 
-export interface IRenderableVariableType {
+export interface IVariableType {
     /**
      * @internal
      */
     _render(): string;
 }
 
-function renderVariableType(type: VariableType): string {
-    if((type as any)._render) {
-        return (type as IRenderableVariableType)._render();
-    }
-    else {
-        return type.toString();
-    }
-}
+export class PrimitiveVariableType implements IVariableType {
+    public static readonly STRING = new PrimitiveVariableType('string');
+    public static readonly NUMBER = new PrimitiveVariableType('number');
+    public static readonly BOOL = new PrimitiveVariableType('bool');
+    public static readonly ANY = new PrimitiveVariableType('any');
 
-export type VariableType = PrimitiveVariableType | CollectionVariableType | TupleVariableType | ObjectVariableType;
+    constructor(private readonly type: string) {
 
-export enum PrimitiveVariableType {
-    STRING = 'string',
-    NUMBER = 'number',
-    BOOL = 'bool',
-    ANY = 'any'
+    }
+
+    /**
+     * @internal
+     */
+    _render(): string {
+        return this.type;
+    }
 }
 
 export enum CollectionType {
@@ -78,20 +78,20 @@ export enum CollectionType {
     SET = 'set'
 }
 
-export class CollectionVariableType implements IRenderableVariableType {
-    constructor(public readonly collectionType: CollectionType, public readonly elementType: VariableType) {
+export class CollectionVariableType implements IVariableType {
+    constructor(public readonly collectionType: CollectionType, public readonly elementType: IVariableType) {
     }
     
     /**
      * @internal
      */
     _render(): string {
-        return `list(${renderVariableType(this.elementType)})`;
+        return `list(${this.elementType._render()})`;
     }
 }
 
-export class TupleVariableType implements IRenderableVariableType {
-    constructor(public readonly elements: VariableType[]) {
+export class TupleVariableType implements IVariableType {
+    constructor(public readonly elements: IVariableType[]) {
 
     }
     
@@ -99,12 +99,12 @@ export class TupleVariableType implements IRenderableVariableType {
      * @internal
      */
     _render(): string {
-        return `tuple(${this.elements.map(e => renderVariableType(e)) .join(", ")})`;
+        return `tuple(${this.elements.map(e => e._render()).join(", ")})`;
     }
 }
 
-export class ObjectVariableType implements IRenderableVariableType {
-    constructor(public readonly attributes: {[k: string]: VariableType}) {
+export class ObjectVariableType implements IVariableType {
+    constructor(public readonly attributes: {[k: string]: IVariableType}) {
 
     }
 
@@ -112,6 +112,6 @@ export class ObjectVariableType implements IRenderableVariableType {
      * @internal
      */
     _render(): string {
-        return `object({${Object.keys(this.attributes).map(k => k + "=" + renderVariableType(this.attributes[k])).join(", ")}})`;
+        return `object({${Object.keys(this.attributes).map(k => k + "=" + this.attributes[k]._render()).join(", ")}})`;
     }
 }
