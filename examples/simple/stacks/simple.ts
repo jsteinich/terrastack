@@ -67,9 +67,20 @@ class MyBucketStack extends tsk.Stack {
       }
     });
 
+    const aModule = new tsk.Module(this, 'aModule', {
+        source: "hashicorp/consul/azurerm",
+        version: "= 1.0.0",
+        providers: {
+          aws: "aws.usw1"
+        },
+        param1: 3,
+        param2: "Test"
+    });
+
     new AwsS3Bucket(this, 'another', {
       bucket: remoteState.get('name'),
-      forceDestroy: false
+      forceDestroy: false,
+      region: aModule.getString("region")
     });
 
     new tsk.Output(this, 'bucket_arn', {
