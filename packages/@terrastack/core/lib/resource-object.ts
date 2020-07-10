@@ -40,7 +40,8 @@ export enum TerraformSchemaType {
   DATA = 'data',
   TERRAFORM = 'terraform',
   OUTPUT = 'output',
-  VARIABLE = 'variable'
+  VARIABLE = 'variable',
+  MODULE = 'module'
 }
 
 export interface TerraformMetadata {
