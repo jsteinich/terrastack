@@ -8,3 +8,4 @@ export * from './remote-state';
 export * from './output';
 export * from './variable';
 export * from './module';
+export * from './local';
