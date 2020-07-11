@@ -83,8 +83,12 @@ class MyBucketStack extends tsk.Stack {
       region: aModule.getString("region")
     });
 
+    const aLocal = new tsk.Local(this, 'local_val', {
+      expression: bucket.arn
+    });
+
     new tsk.Output(this, 'bucket_arn', {
-      value: bucket.arn,
+      value: aLocal.value,
       description: "A bucket arn"
     })
 

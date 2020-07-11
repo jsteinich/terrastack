@@ -70,7 +70,8 @@ export class Stack extends Construct {
         case TerraformSchemaType.TERRAFORM:
         case TerraformSchemaType.OUTPUT:
         case TerraformSchemaType.VARIABLE:
-        case TerraformSchemaType.MODULE: {
+        case TerraformSchemaType.MODULE:
+        case TerraformSchemaType.LOCALS: {
           const manifest = removeEmpty(resolve(this, resource._render()));
           const merged = {...doc[type], ...manifest}
           doc[type] = merged
