@@ -14,6 +14,8 @@ jobs:
         uses: hashicorp/setup-terraform@v1.1.0
         with:
           terraform_wrapper: false
+      - name: Get Provider Versions
+        run: curl -s https://registry.terraform.io/v1/providers/hashicorp/aws/versions | jq -r '.versions | .[] | .version'
       - name: Init Terraform
         run: terraform init
       - name: Export provider schema
