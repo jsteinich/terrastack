@@ -17,4 +17,4 @@ jobs:
       - name: Init Terraform
         run: terraform init
       - name: Export provider schema
-        run: terraform providers schema -json
+        run: terraform providers schema -json > schema.json
