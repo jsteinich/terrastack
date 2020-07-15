@@ -1,7 +1,7 @@
 {
     "provider": {
         "aws": {
-            "version": "2.52.0"
+            "version": "%aws_version%"
         }
     }
 }
