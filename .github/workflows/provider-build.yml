@@ -23,3 +23,7 @@ jobs:
         run: terraform init
       - name: Export provider schema
         run: terraform providers schema -json > schema.json
+      - name: Build Terrastack
+        run: yarn && yarn build
+      - name: Create Provider schema
+        run: terrastack import -i schema.json -p ${{ steps.provider_version.outputs.version }}
