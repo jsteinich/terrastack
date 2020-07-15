@@ -27,3 +27,8 @@ jobs:
         run: yarn && yarn build
       - name: Create Provider schema
         run: packages/terrastack-cli/bin/terrastack import -i schema.json -p ${{ steps.provider_version.outputs.version }}
+      - name: Generated artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: AWS Provider TS
+          path: .generated/aws
