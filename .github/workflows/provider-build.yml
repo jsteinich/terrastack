@@ -13,6 +13,6 @@ jobs:
       - name: HashiCorp - Setup Terraform
         uses: hashicorp/setup-terraform@v1.1.0
       - name: Init Terraform
-        run: terraform Init
+        run: terraform init
       - name: Export provider schema
         run: terraform providers schema -json | jq > schema.json
