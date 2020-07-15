@@ -26,4 +26,4 @@ jobs:
       - name: Build Terrastack
         run: yarn && yarn build
       - name: Create Provider schema
-        run: terrastack import -i schema.json -p ${{ steps.provider_version.outputs.version }}
+        run: packages/terrastack-cli/bin/terrastack import -i schema.json -p ${{ steps.provider_version.outputs.version }}
