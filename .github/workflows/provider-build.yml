@@ -1,0 +1,16 @@
+name: Provider Build
+on: push
+#  schedule:
+#    - cron: '0 0 * * *'
+
+jobs:
+  build_provider:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: HashiCorp - Setup Terraform
+        uses: hashicorp/setup-terraform@v1.1.0
+      - name: Init Terraform
+        run: terraform Init
+      - name: Export provider schema
+        run: terraform providers schema -json | jq > schema.json
