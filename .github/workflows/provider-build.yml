@@ -18,7 +18,7 @@ jobs:
         id: provider_version
         run: echo "::set-output name=version::`curl -s https://registry.terraform.io/v1/providers/hashicorp/aws/versions | jq -r '.versions | .[-1] | .version'`"
       - name: Update Provider Version
-        run: sed -i '\s%aws_version%\${{ steps.provider_version.outputs.version }}'
+        run: sed -i 's/%aws_version%/${{ steps.provider_version.outputs.version }}/g' providers.tf.json
       - name: Init Terraform
         run: terraform init
       - name: Export provider schema
